@@ -13,7 +13,12 @@ import (
 )
 
 func main() {
-	err := godotenv.Load(".env")
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: %s <path to .env>", os.Args[0])
+		return
+	}
+
+	err := godotenv.Load(os.Args[1])
 	token := os.Getenv("DISCORD_TOKEN")
 	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
@@ -25,7 +30,9 @@ func main() {
 
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
 
-	if dg.Open() != nil {
+	err = dg.Open()
+
+	if err != nil {
 		fmt.Println("error opening connection,", err)
 		return
 	}
