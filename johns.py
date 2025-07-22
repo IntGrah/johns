@@ -19,14 +19,9 @@ responses = [
 
 @client.event
 async def on_message(message: discord.Message):
-    if message.author == client.user:
-        return
-
-    if "john" not in message.content.lower():
-        return
-
-    response = random.choice(responses)
-    await message.reply(response)
+    if message.author != client.user and "john" in message.content.lower():
+        response = random.choice(responses)
+        await message.reply(response)
 
 
 if __name__ == "__main__":
